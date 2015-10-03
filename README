@@ -5,9 +5,11 @@ be a README, we warranty absolutely nothing, it does work for us.
 -------------------------------------
 
 MULIEP Fork: This one work with multiple episodes, 
-it will appropriately name and tag file containing 
-more than one episodes, Single episode file hasn't been tested, 
-but should work!
+it will appropriately name and tag file containing  more than one episodes, 
+Single episode file hasn't been tested, but should work!
+
+Command definition have been largely edited from the original version,
+as it's used for us to release show we only support in 1080P iTunes.
 
 -------------------------------------
 
