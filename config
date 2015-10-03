@@ -1,0 +1,95 @@
+# everything after a # is a comment and thus ignored
+
+# these are commands that can be executed on files. (see below)
+#
+# there are a few special variables, all starting with an underscore:
+# _FILE is the complete (globbed) file including path
+# _FILE_NAME is the filename without path
+# _EPNUM is the number of the episode (beginning of ep name)
+# _EPNAME is the name of the ep, fetched from thetvdb, using SEASON and _EPNUM
+
+#
+# >> definition of commands
+#
+
+# a cmd has a name, and includes everything up to the next empty line
+#
+# the variables can be formatted in a more complex manner, see:
+# http://docs.python.org/library/string.html#formatspec
+# for example, {_EPNAME:02d} will format _EPNAME to be padded with zeroes
+# to be two letters long.
+		
+CMD UNDRM
+        java -cp {PATH_REQUIEM} UnDrm "{_FILE}" "{DIR_OUT_UNDRM}/{_FILE_NAME}"
+
+
+CMD 1R
+        {PATH_MKVMERGE} -o "{DIR_OUT_1R}/YP-SU-1R-{SEASON:02d}x{_EPNUM}.mkv"
+                --language "0:eng" --track-name "0:[ENG] AAC 2.0"
+                    --default-track "0:no" --forced-track "0:no" --compression "0:none"
+                --language "1:eng" --track-name "1:{_EPNAME}"
+                    --default-track "1:yes" --forced-track "1:no" --compression "1:none"
+            -a "0,2" -d "1" -S -T --no-global-tags --no-chapters "{_FILE}"
+				--track-order "0:1,0:2,0:0" --engage no_cue_duration,no_cue_relative_position
+
+
+#
+# >> definition of variables
+#
+
+#
+# these vars have special significance, and need to be set
+#
+
+# input directory, this is used as base path for the filenames in commands,
+# and there needs to be one DIR_IN_COMMANDNAME for each command!
+DIR_IN_1R  C:\Users\Administrator\UnDRM\
+DIR_IN_UNDRM  C:\Users\Administrator\Music\iTunes\iTunes Media\TV Shows\SomeShow\ # Here goes the iTunes Path
+
+# Just print command 
+DRY_RUN no
+# season, this is used for tvdb fetching
+SEASON 1
+
+#
+# all variables below are just used as-is in the cmds above, nothing else
+# variables starting with DIR_ will need to be valid directories
+# variables starting with PATH_ will need to be valid files
+# everything else are just arbitrary variables
+#
+
+# requiem path
+PATH_REQUIEM C:\yayponies\requiem\requiem.exe
+# mkvmerge path
+PATH_MKVMERGE C:\MKVToolNix\mkvmerge.exe
+
+# output directory from requiem
+DIR_OUT_UNDRM C:\Users\Administrator\UnDRM\
+# output directory from mkvmerge
+DIR_OUT_1R Z:\ViDeO\
+
+
+#
+# >> actual commands to be executed
+#
+
+# every non-comment non-blank line after this will be considered a command
+COMMANDS
+
+# the * is a wildcard and completes if the filename is unique
+# if you have 1 to 26 in a list like this, you can just un-comment
+# the episode you want to process and run the script
+
+# explicit filenames are possible as well, of course
+# this one will fail because there is no episode number (for tvdb fetching)
+# 7Y SOMETHING BLAH.mp4
+
+#UNDRM 01*
+#1R 01*
+
+
+#...
+
+# this particular config file would try to run the UNDRM, 7T and 7Y commands on
+# the "5 Sisterhooves Social.mkv" file, and, and 7T and 7Y on 6 * (resolving
+# wildcards)
